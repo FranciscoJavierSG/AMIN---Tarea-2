@@ -38,33 +38,33 @@ def inicializarHormigas(hormiga, nodos):
 
     return poblacion
 
-def seleccionarNuevoSegmento(nodos,tamañoPobl,pobl,feromona,feromLocal,prob_max,matrizDistancias,valor_heur,evap_ferom):
+def seleccionarNuevoSegmento(nodos,tamañoPobl,pobl,feromona,feromLocal,probLim,matrizDistancias,valorHeur,factorEvapFerom):
     Thenodos = np.arange(nodos)
     for i in range(tamañoPobl):
         row = pobl[i][:]
         nodosVisitados = np.where(row != -1)
         nodosVisitados = [pobl[i][item] for item in nodosVisitados]
         nodosNoVisitados = [item for item in Thenodos if item not in nodosVisitados[0]]
-        if np.random.rand() < prob_max:
+        if np.random.rand() < probLim:
             arg = []
             for j in nodosNoVisitados:
-                arg.append(feromona[nodosVisitados[0][-1]][j]*((matrizDistancias[nodosVisitados[0][-1]][j])**valor_heur))
+                arg.append(feromona[nodosVisitados[0][-1]][j]*((matrizDistancias[nodosVisitados[0][-1]][j])**valorHeur))
             arg = np.array(arg)
             max = np.where(arg == np.amax(arg))
             pobl[i][len(nodosVisitados[0])] = nodosNoVisitados[max[0][0]]
-            feromona[pobl[i][len(nodosVisitados[0])]][pobl[i][len(nodosVisitados[0])-1]] = (1-evap_ferom)*feromona[pobl[i][len(nodosVisitados[0])]][pobl[i][len(nodosVisitados[0])-1]] + evap_ferom/(nodos*feromLocal)
+            feromona[pobl[i][len(nodosVisitados[0])]][pobl[i][len(nodosVisitados[0])-1]] = (1-factorEvapFerom)*feromona[pobl[i][len(nodosVisitados[0])]][pobl[i][len(nodosVisitados[0])-1]] + factorEvapFerom/(nodos*feromLocal)
             feromona[pobl[i][len(nodosVisitados[0])-1]][pobl[i][len(nodosVisitados[0])]] = feromona[pobl[i][len(nodosVisitados[0])]][pobl[i][len(nodosVisitados[0])-1]]
         else:
             arg = [0]
             for j in range(len(nodosNoVisitados)):
-                arg.append(feromona[nodosVisitados[0][-1]][nodosNoVisitados[j]]*((matrizDistancias[nodosVisitados[0][-1]][nodosNoVisitados[j]])**valor_heur))
+                arg.append(feromona[nodosVisitados[0][-1]][nodosNoVisitados[j]]*((matrizDistancias[nodosVisitados[0][-1]][nodosNoVisitados[j]])**valorHeur))
             arg = arg/np.sum(arg)
             arg = np.array(arg)
             arg = np.cumsum(arg)
             rand = np.random.rand()
             pos = np.where(arg < rand)
             pobl[i][len(nodosVisitados[0])] = nodosNoVisitados[pos[0][-1]]
-            feromona[pobl[i][len(nodosVisitados[0])]][pobl[i][len(nodosVisitados[0])-1]] = (1-evap_ferom)*feromona[pobl[i][len(nodosVisitados[0])]][pobl[i][len(nodosVisitados[0])-1]] + evap_ferom/(nodos*feromLocal)
+            feromona[pobl[i][len(nodosVisitados[0])]][pobl[i][len(nodosVisitados[0])-1]] = (1-factorEvapFerom)*feromona[pobl[i][len(nodosVisitados[0])]][pobl[i][len(nodosVisitados[0])-1]] + factorEvapFerom/(nodos*feromLocal)
             feromona[pobl[i][len(nodosVisitados[0])-1]][pobl[i][len(nodosVisitados[0])]] = feromona[pobl[i][len(nodosVisitados[0])]][pobl[i][len(nodosVisitados[0])-1]]
             
     return pobl
@@ -100,3 +100,4 @@ np.random.shuffle(mejorSol)
 solucionMejorCosto = solucionCalcularCosto(numVariables,mejorSol,matrizHeuristicas)
 feromona = obtenerMatrizFeromonas(matrizHeuristicas,numVariables,solucionMejorCosto)
 feromonaLocal = 1/(solucionMejorCosto*numVariables)
+
