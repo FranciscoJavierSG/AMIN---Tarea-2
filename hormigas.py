@@ -101,3 +101,26 @@ solucionMejorCosto = solucionCalcularCosto(numVariables,mejorSol,matrizHeuristic
 feromona = obtenerMatrizFeromonas(matrizHeuristicas,numVariables,solucionMejorCosto)
 feromonaLocal = 1/(solucionMejorCosto*numVariables)
 
+while 0 < numIt and not np.round(solucionMejorCosto,decimals=4) == 7544.3659:
+    poblacion = inicializarHormigas(tamañoPob, numVariables)
+    for i in range(numVariables-1):
+        poblacion = seleccionarNuevoSegmento(numVariables,tamañoPob,poblacion,feromona,feromonaLocal,probLimite,matrizDistancias,valHeuristica,factEvapFeromona)
+    for i in range(tamañoPob):
+        aux = solucionCalcularCosto(numVariables,poblacion[i][:],matrizHeuristicas)
+        if aux < solucionMejorCosto:
+            solucionMejorCosto = aux
+            mejorSolucion = poblacion[i][:]
+    for i in poblacion:
+        feromona[poblacion[0]][poblacion[-1]] =  (1-factEvapFeromona)*feromona[poblacion[0]][poblacion[-1]] + factEvapFeromona/(numVariables*feromonaLocal)
+        feromona[poblacion[-1]][poblacion[0]] = feromona[poblacion[0]][poblacion[-1]]
+    for i in range(numVariables):
+        for j in range(numVariables):
+            feromona[i][j] = (1-factEvapFeromona)*feromona[i][j]
+            feromona[j][i] = (1-factEvapFeromona)*feromona[j][i]
+    feromona[mejorSolucion[0]][mejorSolucion[-1]] = (1-factEvapFeromona)*feromona[mejorSolucion[0]][mejorSolucion[-1]] + factEvapFeromona/solucionMejorCosto
+    feromona[mejorSolucion[-1]][mejorSolucion[0]] = feromona[mejorSolucion[0]][mejorSolucion[-1]]
+    for i in range(len(mejorSolucion)-1):
+        feromona[mejorSolucion[i]][mejorSolucion[i + 1]] += factEvapFeromona/solucionMejorCosto
+        feromona[mejorSolucion[i + 1]][mejorSolucion[i]] = feromona[mejorSolucion[i]][mejorSolucion[i + 1]]
+    numIt -= 1
+print(solucionMejorCosto, " ", mejorSolucion)
