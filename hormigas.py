@@ -19,6 +19,11 @@ def obtenerMatrizHeuristicas(matriz):
 
     return matrizHeuristicas
 
+def obtenerMatrizFeromonas(matriz,numVar,mejorCosto):
+    matrizFeromonas = np.full_like(matriz, 1/(mejorCosto*numVar))
+
+    return matrizFeromonas
+
 def solucionCalcularCosto(cantNodos,matrizSolucion,matrizBase):
     costo = matrizBase[matrizSolucion[cantNodos-1]][matrizSolucion[0]]
     for i in range(cantNodos-1):
@@ -32,11 +37,6 @@ def inicializarHormigas(hormiga, nodos):
         poblacion[i][0] = float(np.random.randint(nodos))
 
     return poblacion
-
-def inicializarFeromona(nodos,costo):
-    feromona = np.full((nodos,nodos), (costo*nodos)) #aqui no se si es -np.full((nodos,nodos), (costo*nodos))- o -np.full((nodos,nodos), 1/(costo*nodos))-
-
-    return feromona, (costo*nodos)
 
 def seleccionarNuevoSegmento(nodos,tamañoPobl,pobl,feromona,feromLocal,prob_max,matrizDistancias,valor_heur,evap_ferom):
     Thenodos = np.arange(nodos)
@@ -98,3 +98,5 @@ matrizHeuristicas = obtenerMatrizHeuristicas(matrizDistancias)
 mejorSol = np.arange(0,numVariables)
 np.random.shuffle(mejorSol)
 solucionMejorCosto = solucionCalcularCosto(numVariables,mejorSol,matrizHeuristicas)
+feromona = obtenerMatrizFeromonas(matrizHeuristicas,numVariables,solucionMejorCosto)
+feromonaLocal = 1/(solucionMejorCosto*numVariables)
