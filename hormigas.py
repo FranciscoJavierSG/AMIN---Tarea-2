@@ -91,36 +91,41 @@ else:
 np.random.seed(semilla)
 
 berlin52 = pd.read_csv("berlin32.txt", header=None, skiprows=6, skipfooter=1, engine='python', delim_whitespace=True, usecols=(1,2), dtype=int)
-matrizBerlin52 = berlin52.to_numpy() 
+matrizBerlin52 = berlin52.to_numpy()
 numVariables = matrizBerlin52.shape[0]
 matrizDistancias = obtenerMatrizDistancias(numVariables,matrizBerlin52)
 matrizHeuristicas = obtenerMatrizHeuristicas(matrizDistancias)
 mejorSol = np.arange(0,numVariables)
 np.random.shuffle(mejorSol)
-solucionMejorCosto = solucionCalcularCosto(numVariables,mejorSol,matrizHeuristicas)
-feromona = obtenerMatrizFeromonas(matrizHeuristicas,numVariables,solucionMejorCosto)
+solucionMejorCosto = solucionCalcularCosto(numVariables,mejorSol,matrizDistancias)
+feromona = obtenerMatrizFeromonas(matrizDistancias,numVariables,solucionMejorCosto)
 feromonaLocal = 1/(solucionMejorCosto*numVariables)
 
-while 0 < numIt and not np.round(solucionMejorCosto,decimals=4) == 7544.3659:
+while numIt > 0 and not np.round(solucionMejorCosto,decimals=4) == 7544.3659:
     poblacion = inicializarHormigas(tamañoPob, numVariables)
+
     for i in range(numVariables-1):
-        poblacion = seleccionarNuevoSegmento(numVariables,tamañoPob,poblacion,feromona,feromonaLocal,probLimite,matrizDistancias,valHeuristica,factEvapFeromona)
+        poblacion = seleccionarNuevoSegmento(numVariables,tamañoPob,poblacion,feromona,feromonaLocal,probLimite,matrizHeuristicas,valHeuristica,factEvapFeromona)
+
     for i in range(tamañoPob):
-        aux = solucionCalcularCosto(numVariables,poblacion[i][:],matrizHeuristicas)
+        aux = solucionCalcularCosto(numVariables,poblacion[i][:],matrizDistancias)
         if aux < solucionMejorCosto:
             solucionMejorCosto = aux
             mejorSolucion = poblacion[i][:]
-    for i in poblacion:
-        feromona[poblacion[0]][poblacion[-1]] =  (1-factEvapFeromona)*feromona[poblacion[0]][poblacion[-1]] + factEvapFeromona/(numVariables*feromonaLocal)
-        feromona[poblacion[-1]][poblacion[0]] = feromona[poblacion[0]][poblacion[-1]]
+
     for i in range(numVariables):
         for j in range(numVariables):
             feromona[i][j] = (1-factEvapFeromona)*feromona[i][j]
             feromona[j][i] = (1-factEvapFeromona)*feromona[j][i]
-    feromona[mejorSolucion[0]][mejorSolucion[-1]] = (1-factEvapFeromona)*feromona[mejorSolucion[0]][mejorSolucion[-1]] + factEvapFeromona/solucionMejorCosto
-    feromona[mejorSolucion[-1]][mejorSolucion[0]] = feromona[mejorSolucion[0]][mejorSolucion[-1]]
+    
     for i in range(len(mejorSolucion)-1):
         feromona[mejorSolucion[i]][mejorSolucion[i + 1]] += factEvapFeromona/solucionMejorCosto
         feromona[mejorSolucion[i + 1]][mejorSolucion[i]] = feromona[mejorSolucion[i]][mejorSolucion[i + 1]]
+    
+    feromona[mejorSolucion[0]][mejorSolucion[-1]] = (1-factEvapFeromona)*feromona[mejorSolucion[0]][mejorSolucion[-1]] + factEvapFeromona/solucionMejorCosto
+    feromona[mejorSolucion[-1]][mejorSolucion[0]] = feromona[mejorSolucion[0]][mejorSolucion[-1]]
+
+    print("Iteración: ",numIt)
     numIt -= 1
-print(solucionMejorCosto, " ", mejorSolucion)
+
+print("Costo de la mejor solución: ", np.round(solucionMejorCosto,decimals=4), "\nSolución: ", mejorSolucion)

@@ -20,9 +20,9 @@ Donde:
 - **Matriz_Coords**: Archivo de entrada, documento con las coordenadas de los nodos.
 - **Tamaño_Pob**: Tamaño de la colonia o número de hormigas, valor entero.
 - **Iteraciones**: Condición de término o número de iteraciones, valor entero.
-- **Factor_Evap**: Factor de evaporación de la feromona, valor entero de 0 a 100.
-- **Valor_Heur**: El peso del valor de la heurística, valor entero de 0 a 100.
-- **Prob_Limite**: Valor de probabilidad límite, valor entero de 0 a 100.
+- **Factor_Evap**: Factor de evaporación de la feromona, valor entero entre 0 y 1.
+- **Valor_Heur**: El peso del valor de la heurística, valor entero entre 0 y 1.
+- **Prob_Limite**: Valor de probabilidad límite, valor entero entre 0 y 1.
 
 ## Ejemplo de Ejecución
 
