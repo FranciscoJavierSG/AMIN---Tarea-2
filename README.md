@@ -6,7 +6,7 @@ El programa tiene como objetivo desarrollar una aplicación que implemente el Pr
 ## Instalación
 Antes de ejecutar el programa, es necesario:
 - Tener instalado Python 3.8.10 en su sistema.
-- Para descargar el programa, presione en el siguiente [enlace](https://codeload.github.com/FranciscoJavierSG/AMIN---Trabajo-1/zip/refs/heads/main?token=AJXTOXE4F3DK6UAFPFH5NPLDGZ436).
+- Para descargar el programa, presione en el siguiente [enlace](https://codeload.github.com/FranciscoJavierSG/AMIN---Tarea-2/zip/refs/heads/main).
 
 ## Ejecución 
 Para ejecutar el programa, escriba lo siguiente en la consola o terminal de su sistema operativo:
