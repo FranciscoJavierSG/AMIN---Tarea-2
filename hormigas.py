@@ -78,7 +78,7 @@ if len(sys.argv) == 8:
     valHeuristica = float(sys.argv[6])
     probLimite = float(sys.argv[7])
     print("Semilla: ", semilla)
-    print("Matriz de Distancias: ", matrizBerlin32)
+    print("Matriz de Coordenadas Berlin32: ", matrizBerlin32)
     print("Tamaño de Población: ", tamañoPob)
     print("Número de Iteraciones: ", numIt)
     print("Factor de Evaporación de la Feromona: ", factEvapFeromona)
