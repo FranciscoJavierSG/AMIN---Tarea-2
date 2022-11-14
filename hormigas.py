@@ -112,6 +112,7 @@ while numIt > 0 and not np.round(solucionMejorCosto,decimals=4) == 7544.3659:
         if aux < solucionMejorCosto:
             solucionMejorCosto = aux
             mejorSolucion = poblacion[i][:]
+            print("En la iteración: ", numIt, " se encontró una mejor solución. Esta es: ", solucionMejorCosto)
 
     for i in range(numVariables):
         for j in range(numVariables):
