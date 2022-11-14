@@ -39,12 +39,12 @@ def inicializarHormigas(hormiga, nodos):
     return poblacion
 
 def seleccionarNuevoSegmento(nodos,tamañoPobl,pobl,feromona,feromLocal,probLim,matrizDistancias,valorHeur,factorEvapFerom):
-    Thenodos = np.arange(nodos)
+    matrizNodos = np.arange(nodos)
     for i in range(tamañoPobl):
         row = pobl[i][:]
         nodosVisitados = np.where(row != -1)
         nodosVisitados = [pobl[i][item] for item in nodosVisitados]
-        nodosNoVisitados = [item for item in Thenodos if item not in nodosVisitados[0]]
+        nodosNoVisitados = [item for item in matrizNodos if item not in nodosVisitados[0]]
         if np.random.rand() < probLim:
             arg = []
             for j in nodosNoVisitados:
