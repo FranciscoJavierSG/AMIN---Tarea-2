@@ -27,5 +27,5 @@ Donde:
 ## Ejemplo de Ejecución
 
 ```
-py hormigas.py 4 berlin32.txt 40 200 0.1 2.5 0.9
+py hormigas.py 1 berlin32.txt 50 200 0.1 2.5 0.9
 ```
